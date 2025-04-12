@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Recommendation App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #titleInput {
+            padding: 10px;
+            width: 80%;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #recommendationsContainer {
+            margin-top: 30px;
+        }
+        .book {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .book h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .book p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Book Recommendation App</h1>
+
+        <!-- Input for book title -->
+        <div class="input-container">
+            <input type="text" id="titleInput" placeholder="Enter book title" />
+            <br>
+            <button onclick="getRecommendations(document.getElementById('titleInput').value)">Get Recommendations</button>
+        </div>
+
+        <!-- Container for displaying book recommendations -->
+        <div id="recommendationsContainer"></div>
+    </div>
+
+    <script>
+        // Function to fetch recommendations from the Flask backend
+        async function getRecommendations(title) {
+            const recommendationsContainer = document.getElementById("recommendationsContainer");
+
+            // Clear previous recommendations
+            recommendationsContainer.innerHTML = "";
+
+            if (!title) {
+                recommendationsContainer.innerHTML = "<p>Please enter a book title.</p>";
+                return;
+            }
+
+            try {
+                // Send GET request to the backend to get recommendations
+                const response = await fetch(`http://127.0.0.1:5000/recommend?title=${encodeURIComponent(title)}`);
+
+                if (!response.ok) {
+                    throw new Error("Error fetching recommendations");
+                }
+
+                const data = await response.json();
+
+                if (data.recommendations && data.recommendations.length > 0) {
+                    // Loop through each recommendation and display it
+                    data.recommendations.forEach(book => {
+                        const bookDiv = document.createElement("div");
+                        bookDiv.classList.add("book");
+
+                        const titleElement = document.createElement("h3");
+                        titleElement.textContent = book.title;
+                        bookDiv.appendChild(titleElement);
+
+                        const authorElement = document.createElement("p");
+                        authorElement.textContent = `Author: ${book.authors || "Unknown"}`;
+                        bookDiv.appendChild(authorElement);
+
+                        const categoryElement = document.createElement("p");
+                        categoryElement.textContent = `Category: ${book.categories || "Unknown"}`;
+                        bookDiv.appendChild(categoryElement);
+
+                        recommendationsContainer.appendChild(bookDiv);
+                    });
+                } else {
+                    recommendationsContainer.innerHTML = "<p>No recommendations found.</p>";
+                }
+            } catch (error) {
+                recommendationsContainer.innerHTML = "<p>There was an error fetching the recommendations.</p>";
+                console.error("Error fetching recommendations:", error);
+            }
+        }
+    </script>
+
+</body>
+</html>
