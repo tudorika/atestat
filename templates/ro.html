@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="../static/css/styles.css"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Recommendation App</title>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Book Recommendation App</h1>
+
+        <!-- Input for book title -->
+        <div class="form__group field">
+            <input type="input" class="form__field" placeholder="Enter book title" name="name" id='titleInput' required />
+            <label for="name" class="form__label">Name</label>
+            <br>
+            <button onclick="getRecommendations(document.getElementById('titleInput').value)">Get Recommendations</button>
+        </div>
+
+        <!-- Container for displaying book recommendations -->
+        <div id="recommendationsContainer"></div>
+    </div>
+
+    <script>
+        // Function to fetch recommendations from the Flask backend
+        async function getRecommendations(title) {
+            const recommendationsContainer = document.getElementById("recommendationsContainer");
+
+            // Clear previous recommendations
+            recommendationsContainer.innerHTML = "";
+
+            if (!title) {
+                recommendationsContainer.innerHTML = "<p>Please enter a book title.</p>";
+                return;
+            }
+
+            try {
+                // Send GET request to the backend to get recommendations
+                const response = await fetch(`http://127.0.0.1:5000/ro/recommend?title=${encodeURIComponent(title)}`);
+
+                if (!response.ok) {
+                    throw new Error("Error fetching recommendations");
+                }
+
+                const data = await response.json();
+
+                if (data.recommendations && data.recommendations.length > 0) {
+                    // Loop through each recommendation and display it
+                    data.recommendations.forEach(book => {
+                        const bookDiv = document.createElement("div");
+                        bookDiv.classList.add("book");
+
+                        const titleElement = document.createElement("h3");
+                        titleElement.textContent = book.titlu;
+                        bookDiv.appendChild(titleElement);
+
+                        const authorElement = document.createElement("p");
+                        authorElement.textContent = `Author: ${book.autor || "Unknown"}`;
+                        bookDiv.appendChild(authorElement);
+
+                        const categoryElement = document.createElement("p");
+                        categoryElement.textContent = `Category: ${book.genwiki || "Unknown"}`;
+                        bookDiv.appendChild(categoryElement);
+
+                        recommendationsContainer.appendChild(bookDiv);
+                    });
+                } else {
+                    recommendationsContainer.innerHTML = "<p>No recommendations found.</p>";
+                }
+            } catch (error) {
+                recommendationsContainer.innerHTML = "<p>There was an error fetching the recommendations.</p>";
+                console.error("Error fetching recommendations:", error);
+            }
+        }
+    </script>
+
+</body>
+</html>
