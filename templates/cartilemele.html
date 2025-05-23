@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="../static/css/styles.css"> 
+<link rel="stylesheet" href="../static/css/cartilemele.css"
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Rubik:wght@582&display=swap" rel="stylesheet">
+    <title>Recomandare lecturi</title>
+</head>
+<body>
+    <div class="all-container">
+        <div class="sidebar">
+        <button class="redirect" onclick="window.location.href='/'">
+            Cauta lecturi
+            <span class="material-symbols-outlined" style="font-size: 48px;display: flex; justify-content: center;">search</span>
+        </button>
+        </script>
+        <button class="redirect" onclick="window.location.href='cartilemele'">
+            Cartile mele
+            <span class="material-symbols-outlined" style="font-size: 48px;display: flex; justify-content: center;">collections_bookmark</span>
+        </button>
+        </div>
+
+    <div class="container">
+        
+        <div class="form__group field">
+            <button style="font-family: Rubik" id="addBookBtn" type="button">Adaugă carte nouă</button>
+            <div id="bookList" class="book-list"></div>
+
+
+            <!-- Modal Overlay -->
+            <div id="modalOverlay" class="modal-overlay hidden">
+            <div class="modal-content">
+                <h2>Adaugă Carte Nouă</h2>
+                <form id="newBookForm">
+                <label for="title">Titlu:</label>
+                <input type="text" id="title" name="title" required />
+
+                <label for="author">Autor:</label>
+                <input type="text" id="author" name="author" required />
+
+                <label for="rating">Recenzie (1-5):</label>
+                <select id="rating" name="rating">
+                    <option value="1">⭐</option>
+                    <option value="2">⭐⭐</option>
+                    <option value="3">⭐⭐⭐</option>
+                    <option value="4">⭐⭐⭐⭐</option>
+                    <option value="5">⭐⭐⭐⭐⭐</option>
+                </select>
+
+                <div class="modal-actions">
+                    <button style="font-family: Rubik" type="submit">Salvează</button>
+                    <button style="font-family: Rubik" type="button" id="closeModalBtn">Anulează</button>
+                </div>
+                </form>
+            </div>
+            </div>
+
+        <script src="../static/js/cartilemele_all.js"></script>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

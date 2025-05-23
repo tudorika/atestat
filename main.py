@@ -126,6 +126,10 @@ def home():
 def home_ro():
     return render_template('ro.html')  # Assuming your HTML file is inside the "templates" folder
 
+@app.route('/cartilemele')
+def home_cartilemele():
+    return render_template('cartilemele.html')  # Assuming your HTML file is inside the "templates" folder
+
 # Route for book recommendations
 @app.route('/recommend', methods=['GET'])
 def recommend_books_route():
@@ -145,6 +149,23 @@ def recommend_books_route():
 
 @app.route('/ro/recommend', methods=['GET'])
 def recommend_books_ro_route():
+    title = request.args.get('title')
+    if not title:
+        return jsonify({"error": "Please provide a title parameter"}), 400
+    
+    recommendations = recommend_books_ro(title)
+
+    if isinstance(recommendations, str):  # If we got a string, it's an error message
+        return jsonify({"error": recommendations}), 404
+    
+    # Convert the recommendations DataFrame to a list of dictionaries for JSON response
+    recommendations_list = recommendations.to_dict(orient='records')
+    
+    return jsonify({"recommendations": recommendations_list})
+
+
+@app.route('/cartilemele', methods=['GET'])
+def cartilemele_route():
     title = request.args.get('title')
     if not title:
         return jsonify({"error": "Please provide a title parameter"}), 400
