@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
 import pandas as pd
 import os
 import numpy as np
@@ -63,6 +64,7 @@ indicesro = pd.Series(dfro.index, index=dfro['titlu']).drop_duplicates()
 
 # Inițializarea aplicației Flask
 app = Flask(__name__)
+CORS(app)
 
 # Funcția cu care se recomanda cărți după titlu
 def recommend_books(title, num_recommendations=5):
