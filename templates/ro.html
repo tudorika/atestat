@@ -30,15 +30,13 @@
         <button class="redirect-en" onclick="window.location.href='/'">EN</button>
         <h1>Recomandare lecturi romanesti</h1>
 
-        <!-- Input for book title -->
         <div class="form__group field">
-            <input type="input" class="form__field" placeholder="Enter book title" name="name" id='titleInput' required />
+            <input type="input" class="form__field" placeholder="Introdu titlu de carte" name="name" id='titleInput' required />
             <label for="name" class="form__label">Nume</label>
             <br>
             <button style="font-family: Rubik" onclick="getRecommendations(document.getElementById('titleInput').value)">Genereaza recomandari</button>
         </div>
 
-        <!-- Container for displaying book recommendations -->
         <div id="recommendationsContainer"></div>
     </div>
 

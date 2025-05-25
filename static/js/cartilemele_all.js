@@ -4,12 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalOverlay = document.getElementById("modalOverlay");
   const addBookBtn = document.getElementById("addBookBtn");
 
-  // Show modal when clicking "Adaugă carte noua" button
   addBookBtn.addEventListener("click", () => {
     modalOverlay.classList.remove("hidden");
   });
 
-  // Hide modal when clicking outside form content (optional)
+  // Se ascunde fereastra daca se apasa in afara ei
   modalOverlay.addEventListener("click", (e) => {
     if (e.target === modalOverlay) {
       modalOverlay.classList.add("hidden");
@@ -17,10 +16,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Load and render books on page load
+  // Incarca si afiseaza cartile pe pagina
   renderBooks();
 
-  // Handle form submission
+  // Pentru a salva datele introduse in formular
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -34,23 +33,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const newBook = { title, author, rating };
-
-    // Get existing books or empty array
+    // Se updateaza lista cu carti sau se creeaza daca nu exista deja
     const books = JSON.parse(localStorage.getItem("books")) || [];
     books.push(newBook);
 
-    // Save updated list
+    // Se salveaza lista cu carti
     localStorage.setItem("books", JSON.stringify(books));
 
-    // Reset form and hide modal
+    // Se reseteaza formularul si se inchide fereastra
     form.reset();
     modalOverlay.classList.add("hidden");
 
-    // Re-render book list
+    // Se afiseaza din nou, dupa update, cartile din lista
     renderBooks();
   });
 
-  // Function to render all books as grid cards
+  // Functie pentru a afisa toate cartile in spatii separate
   function renderBooks() {
     const books = JSON.parse(localStorage.getItem("books")) || [];
     bookList.innerHTML = "";
@@ -69,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
       bookList.appendChild(item);
     });
 
-    // Attach event listeners to all remove buttons
+    // Event listener pentru toate butoanele de stergere (detecteaza actiunea de stergere)
     document.querySelectorAll(".remove-book").forEach(button => {
       button.addEventListener("click", (e) => {
         const index = e.target.getAttribute("data-index");
@@ -78,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Remove book by index
+  // Sterge cartile dupa index
   function removeBook(index) {
     const books = JSON.parse(localStorage.getItem("books")) || [];
     books.splice(index, 1);

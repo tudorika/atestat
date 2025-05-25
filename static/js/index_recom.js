@@ -1,8 +1,8 @@
-// Function to fetch recommendations from the Flask backend
+// Functie pentru a prelua datele recomandarilor din Flask
         async function getRecommendations(title) {
             const recommendationsContainer = document.getElementById("recommendationsContainer");
 
-            // Clear previous recommendations
+            // Se sterg recomandarile trecute
             recommendationsContainer.innerHTML = "";
 
             if (!title) {
@@ -11,7 +11,7 @@
             }
 
             try {
-                // Send GET request to the backend to get recommendations
+                // Trimite un request GET pentru a primi recomandarea
                 const response = await fetch(`http://127.0.0.1:5000/recommend?title=${encodeURIComponent(title)}`);
 
                 if (!response.ok) {
@@ -21,7 +21,6 @@
                 const data = await response.json();
 
                 if (data.recommendations && data.recommendations.length > 0) {
-                    // Loop through each recommendation and display it
                     data.recommendations.forEach(book => {
                         const bookDiv = document.createElement("div");
                         bookDiv.classList.add("book");
